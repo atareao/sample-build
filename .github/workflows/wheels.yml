@@ -9,22 +9,13 @@ jobs:
     strategy:
       matrix:
         # macos-13 is an intel runner, macos-14 is apple silicon
-        os: [windows-latest]
+        os: [ubuntu-latest]
 
     steps:
-      - uses: actions/checkout@v4
-
-      - name: Build wheels
-        uses: pypa/cibuildwheel@v2.20.0
-        # env:
-        #   CIBW_SOME_OPTION: value
-        #    ...
-        # with:
-        #   package-dir: .
-        #   output-dir: wheelhouse
-        #   config-file: "{package}/pyproject.toml"
-
-      - uses: actions/upload-artifact@v4
+      - uses: actions/checkout@v2
+      - id: build
+        uses: OpenAstronomy/build-python-dist@v1
         with:
-          name: cibw-wheels-${{ matrix.os }}-${{ strategy.job-index }}
-          path: ./wheelhouse/*.whl
+          test_extras: test
+          test_command: pytest --pyargs test_package
+          python-version: '3.8'
