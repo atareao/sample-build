@@ -15,6 +15,12 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+    - name: Version tag
+      uses: Jorricks/action-python-autotagging@1.0.1
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        path: src/sample_build/__init__.py
+        variable: __version__
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
